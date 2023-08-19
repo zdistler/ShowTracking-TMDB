@@ -131,7 +131,7 @@ namespace ShowTracking
         public List<Show> GetShowNames()
         {
             List<Show> shows = new List<Show>();
-            DataTable dataTable = FillDataTable("select * from dbo.Shows order by Name");
+            DataTable dataTable = FillDataTable("select Name, Channel from dbo.Shows order by Name");
 
             foreach (DataRow row in dataTable.Rows)
             {
@@ -152,10 +152,14 @@ namespace ShowTracking
             
             foreach (DataRow row in dataTable.Rows)
             {
-                shows.Add(new Show(row.Field<string>("Channel"), row.Field<bool>("Downloaded"),
-                row.Field<int>("ID"), row.Field<string>("Name"),
-                GetSeasons(row.Field<string>("Name"), row.Field<byte>("Seasons")), row.Field<bool>("Updatable"),
-                row.Field<bool>("Watched"), this));
+                shows.Add(new Show(row.Field<string>("Channel"), 
+                    row.Field<bool>("Downloaded"),
+                    row.Field<int>("ID"), 
+                    row.Field<string>("Name"),
+                    GetSeasons(row.Field<string>("Name"), 
+                    row.Field<byte>("Seasons")), 
+                    row.Field<bool>("Updatable"),
+                    row.Field<bool>("Watched"), this));
             }
 
             return shows;
@@ -165,7 +169,7 @@ namespace ShowTracking
         /// Gets all shows with a true value for updatable.
         /// </summary>
         /// <returns> List of updatable shows </returns>
-        public List<Show> GetUpdateShows()
+        public List<Show> GetUpdatableShows()
         {
             List<Show> shows = new List<Show>();
             DataTable dataTable = FillDataTable("select * from dbo.Shows where Updatable = 1 " +
@@ -173,10 +177,28 @@ namespace ShowTracking
             
             foreach (DataRow row in dataTable.Rows)
             {
-                shows.Add(new Show(row.Field<string>("Channel"), row.Field<bool>("Downloaded"),
-                row.Field<int>("ID"), row.Field<string>("Name"),
-                GetSeasons(row.Field<string>("Name"), row.Field<byte>("Seasons")), row.Field<bool>("Updatable"),
-                row.Field<bool>("Watched"), this));
+                shows.Add(new Show(row.Field<string>("Channel"),
+                    row.Field<string>("Name"),
+                    row.Field<bool>("Updatable")));
+            }
+
+            return shows;
+        }
+
+        /// <summary>
+        /// Gets all shows names, channels, and updatable statuses.
+        /// </summary>
+        /// <returns> List of Shows </returns>
+        public List<Show> GetUpdateShows()
+        {
+            List<Show> shows = new List<Show>();
+            DataTable dataTable = FillDataTable("select Name, Channel, Updatable from dbo.Shows order by Name");
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                shows.Add(new Show(row.Field<string>("Channel"),
+                    row.Field<string>("Name"),
+                    row.Field<bool>("Updatable")));
             }
 
             return shows;

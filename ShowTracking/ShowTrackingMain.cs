@@ -300,7 +300,7 @@ namespace ShowTracking
         /// </summary>
         private void ListUpdateShows()
         {
-            List<Show> shows = SqlQuery.GetUpdateShows();
+            List<Show> shows = SqlQuery.GetUpdatableShows();
             ConsoleTable consoleTable = new ConsoleTable("NAME", "CHANNEL");
 
             foreach (Show show in shows)
@@ -380,7 +380,7 @@ namespace ShowTracking
                     case "updatable":
                         while (true)
                         {
-                            show = ShowSelect(SqlQuery.GetShowNames(), ListShowsUpdatable);
+                            show = ShowSelect(SqlQuery.GetUpdateShows(), ListShowsUpdatable);
                             if (show != null) SqlQuery.SetUpdatableShow(show);
                             else break;
                         }
@@ -555,11 +555,11 @@ namespace ShowTracking
         /// </summary>
         private void UpdateShows()
         {
-            List<Show> shows = SqlQuery.GetUpdateShows();
+            List<Show> shows = SqlQuery.GetUpdatableShows();
 
             foreach (Show show in shows)
             {
-                UpdateShow(show);
+                UpdateShow(SqlQuery.GetShow(show.Name));
             }
         }
 

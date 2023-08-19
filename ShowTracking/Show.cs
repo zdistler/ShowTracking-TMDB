@@ -42,15 +42,19 @@ namespace ShowTracking
             Name = name;
         }
 
-        public Show(string channel, bool downloaded, int id, string name, 
-            List<Season> seasons, bool update, bool watched, SqlQuery sqlQuery) : this(channel, name) 
+        public Show(string channel, string name, bool update)
         {
-            //Channel = channel;
+            Channel = channel;
+            Name = name;
+            Update = update;
+        }
+
+        public Show(string channel, bool downloaded, int id, string name, 
+            List<Season> seasons, bool update, bool watched, SqlQuery sqlQuery) : this(channel, name, update) 
+        {
             Downloaded = downloaded;
             Id = id;
-            //Name = name;
             Seasons = seasons;
-            Update = update;
             Watched = watched;
             SqlQuery = sqlQuery;
         }
